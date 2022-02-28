@@ -10,15 +10,33 @@ const Task = function (title, completed) {
 Task.create = (newTask, result) => {
   db.query("INSERT INTO tasks SET ?", newTask, (err, res) => {
     if (err) {
-      console.log(err);
+      console.log("Error :", err);
       result(err, null);
+      return;
     }
     result(null, { ...newTask });
+    return;
   });
 };
 
 //Find by id
-Task.findById = () => {};
+Task.findById = (id, result) => {
+  db.query(`SELECT * FROM tasks WHERE id = ${id}`, (err, res) => {
+    if (err) {
+      console.log("Error :", err);
+      result(err, result);
+      return;
+    }
+
+    if (res.length) {
+      console.log("Found task :", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    result({ message: "not_found" }, null);
+  });
+};
 
 //Get all
 Task.getAll = (title, result) => {
@@ -30,8 +48,10 @@ Task.getAll = (title, result) => {
     if (err) {
       console.log(error);
       result(err, null);
+      return;
     } else {
       result(null, res);
+      return;
     }
   });
 };
