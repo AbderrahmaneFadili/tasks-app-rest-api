@@ -82,6 +82,18 @@ Task.remove = (id, result) => {
 };
 
 //Remove all tasks
-Task.removeAll = () => {};
+Task.removeAll = (result) => {
+  db.query(`TRUNCATE TABLE tasks`, (err, res) => {
+    if (err) {
+      console.log("Error :", err);
+      result(err, null);
+      return;
+    }
+
+    result(null, {
+      results: `all tasks deleted`,
+    });
+  });
+};
 
 module.exports = Task;

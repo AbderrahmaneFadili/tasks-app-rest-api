@@ -71,3 +71,19 @@ exports.deleteById = (req, res) => {
     }
   });
 };
+
+//Delete All
+exports.deleteAll = (req, res) => {
+  Task.removeAll((err, data) => {
+    if (err) {
+      res.status(500).send({
+        message:
+          err.message || `Some error occurred while removing all tutorials.`,
+      });
+    } else {
+      res.send({
+        message: data.results,
+      });
+    }
+  });
+};
