@@ -21,7 +21,20 @@ Task.create = (newTask, result) => {
 Task.findById = () => {};
 
 //Get all
-Task.getAll = () => {};
+Task.getAll = (title, result) => {
+  let query = "SELECT * FROM tasks";
+  if (title) {
+    query.concat(` WHERE title LIKE '%${title}%'`);
+  }
+  db.query(query, (err, res) => {
+    if (err) {
+      console.log(error);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
 
 //Update by id
 Task.updateById = () => {};

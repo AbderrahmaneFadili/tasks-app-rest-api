@@ -5,6 +5,8 @@ module.exports = (app) => {
 
   //Create a new Task
   router.post("/", taskController.create);
+  //Get all tasks
+  router.get("/", taskController.getAll);
 
   app.use("/api/tasks/", router);
 };

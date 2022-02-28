@@ -22,3 +22,17 @@ exports.create = (req, res) => {
     }
   });
 };
+
+//Get All Tasks
+exports.getAll = (req, res) => {
+  const title = req.query.title;
+  Task.getAll(title, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving tasks",
+      });
+    } else {
+      res.send(data);
+    }
+  });
+};
