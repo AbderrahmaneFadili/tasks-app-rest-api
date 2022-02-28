@@ -8,8 +8,9 @@ exports.create = (req, res) => {
       message: "Content cannot be empty",
     });
   }
+
   //Create a task
-  const task = new Task(req.body.title, req.body.completed);
+  const task = new Task(req.body);
 
   //Save Tutorial in the database
   Task.create(task, (err, data) => {
@@ -77,13 +78,25 @@ exports.deleteAll = (req, res) => {
   Task.removeAll((err, data) => {
     if (err) {
       res.status(500).send({
-        message:
-          err.message || `Some error occurred while removing all tutorials.`,
+        message: err.message || `Some error occurred while removing all tasks.`,
       });
     } else {
       res.send({
         message: data.results,
       });
+    }
+  });
+};
+
+//Update by id
+exports.updateById = (req, res) => {
+  Task.updateOne(req.params.id, new Task(req.body), (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: err.message || `Some error occurred while updating the task.`,
+      });
+    } else {
+      res.send(data);
     }
   });
 };

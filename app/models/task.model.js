@@ -1,9 +1,9 @@
 const db = require("./db");
 
 //contructor
-const Task = function (title, completed) {
-  this.title = title;
-  this.completed = completed;
+const Task = function (task) {
+  this.title = task.title;
+  this.completed = task.completed;
 };
 
 //Create
@@ -40,9 +40,9 @@ Task.findById = (id, result) => {
 
 //Get all
 Task.getAll = (title, result) => {
-  let query = "SELECT * FROM tasks";
+  let query = `SELECT * FROM tasks`;
   if (title) {
-    query.concat(` WHERE title LIKE '%${title}%'`);
+    query += ` WHERE title LIKE '%${title}%';`;
   }
   db.query(query, (err, res) => {
     if (err) {
@@ -55,9 +55,6 @@ Task.getAll = (title, result) => {
     }
   });
 };
-
-//Update by id
-Task.updateById = () => {};
 
 //Remove task
 Task.remove = (id, result) => {
@@ -94,6 +91,33 @@ Task.removeAll = (result) => {
       results: `all tasks deleted`,
     });
   });
+};
+
+//Update one
+Task.updateOne = (id, task, result) => {
+  db.query(
+    `UPDATE tasks SET title = ?  , completed = ? WHERE id = ?`,
+    [task.title, task.completed, id],
+    (err, res) => {
+      if (err) {
+        console.log("Error : ", err);
+        result(err, null);
+      }
+
+      if (res.affectedRows === 0) {
+        result(
+          {
+            message: "not_found",
+          },
+          null,
+        );
+      } else {
+        result(null, {
+          message: `Task ${id} updated`,
+        });
+      }
+    },
+  );
 };
 
 module.exports = Task;

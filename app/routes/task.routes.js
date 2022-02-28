@@ -13,6 +13,8 @@ module.exports = (app) => {
   router.delete("/:id", taskController.deleteById);
   //Delete all
   router.delete("/", taskController.deleteAll);
+  //Update by id
+  router.put("/:id", taskController.updateById);
 
   app.use("/api/tasks/", router);
 };
