@@ -9,6 +9,8 @@ module.exports = (app) => {
   router.get("/", taskController.getAll);
   //Find by id
   router.get("/:id", taskController.findById);
+  //Delete by id
+  router.delete("/:id", taskController.deleteById);
 
   app.use("/api/tasks/", router);
 };

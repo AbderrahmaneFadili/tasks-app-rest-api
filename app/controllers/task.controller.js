@@ -55,3 +55,19 @@ exports.getAll = (req, res) => {
     }
   });
 };
+
+//Delete Task by id
+exports.deleteById = (req, res) => {
+  const id = req.params.id;
+  Task.remove(id, (err, data) => {
+    if (err) {
+      if (err.message === "not_found") {
+        res.status(404).send({
+          message: `Not found task with id : ${id}`,
+        });
+      }
+    } else {
+      res.send(data);
+    }
+  });
+};

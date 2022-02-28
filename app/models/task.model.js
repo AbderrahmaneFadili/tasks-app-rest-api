@@ -60,7 +60,26 @@ Task.getAll = (title, result) => {
 Task.updateById = () => {};
 
 //Remove task
-Task.remove = () => {};
+Task.remove = (id, result) => {
+  db.query(`DELETE FROM tasks WHERE id = ?`, id, (err, res) => {
+    //check is the erro not null
+    if (err) {
+      console.log("Error : ", err);
+      result(err, null);
+      return;
+    }
+    if (res.affectedRows == 0) {
+      //not task found with the id
+      result({ message: "not_found" }, null);
+      return;
+    } else {
+      result(null, {
+        message: `task ${id} deleted `,
+        affectedRows: res.affectedRows,
+      });
+    }
+  });
+};
 
 //Remove all tasks
 Task.removeAll = () => {};
